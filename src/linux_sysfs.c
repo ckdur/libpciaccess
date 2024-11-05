@@ -96,7 +96,7 @@ pci_system_linux_sysfs_create( void )
      * can be accessed using this interface.
      */
 
-    if ( stat( SYS_BUS_PCI, & st ) == 0 ) {
+    if ( __xstat(3, SYS_BUS_PCI, & st ) == 0 ) {
 	pci_sys = calloc( 1, sizeof( struct pci_system ) );
 	if ( pci_sys != NULL ) {
 	    pci_sys->methods = & linux_sysfs_methods;
@@ -355,7 +355,7 @@ pci_device_linux_sysfs_probe( struct pci_device * dev )
     return err;
 }
 
-
+#if 0
 static int
 pci_device_linux_sysfs_read_rom( struct pci_device * dev, void * buffer )
 {
@@ -426,6 +426,7 @@ pci_device_linux_sysfs_read_rom( struct pci_device * dev, void * buffer )
     close( fd );
     return err;
 }
+#endif
 
 
 static int
@@ -702,6 +703,7 @@ pci_device_linux_sysfs_map_range(struct pci_device *dev,
  * systems /dev/mem must be used.  On these systems it is also possible that
  * \c mmap64 may need to be used.
  */
+#if 0
 static int
 pci_device_linux_sysfs_unmap_range(struct pci_device *dev,
 				   struct pci_device_mapping *map)
@@ -741,6 +743,7 @@ pci_device_linux_sysfs_unmap_range(struct pci_device *dev,
 
     return err;
 }
+#endif
 
 static void pci_device_linux_sysfs_set_enable(struct pci_device *dev, int enable)
 {
@@ -813,7 +816,7 @@ static int pci_device_linux_sysfs_has_kernel_driver(struct pci_device *dev)
 	      dev->dev,
 	      dev->func );
 
-    ret = stat(name, &dummy);
+    ret = __xstat(3, name, &dummy);
     if (ret < 0)
 	return 0;
     return 1;
@@ -841,6 +844,7 @@ pci_device_linux_sysfs_open_device_io(struct pci_io_handle *ret,
     return ret;
 }
 
+#if 0
 static struct pci_io_handle *
 pci_device_linux_sysfs_open_legacy_io(struct pci_io_handle *ret,
 				      struct pci_device *dev, pciaddr_t base,
@@ -878,6 +882,7 @@ pci_device_linux_sysfs_open_legacy_io(struct pci_io_handle *ret,
 
     return ret;
 }
+#endif
 
 static void
 pci_device_linux_sysfs_close_io(struct pci_device *dev,
@@ -980,6 +985,7 @@ pci_device_linux_sysfs_write8(struct pci_io_handle *handle, uint32_t port,
     }
 }
 
+#if 0
 static int
 pci_device_linux_sysfs_map_legacy(struct pci_device *dev, pciaddr_t base,
 				  pciaddr_t size, unsigned map_flags, void **addr)
@@ -1022,6 +1028,7 @@ pci_device_linux_sysfs_map_legacy(struct pci_device *dev, pciaddr_t base,
     close(fd);
     return ret;
 }
+#endif
 
 static int
 pci_device_linux_sysfs_unmap_legacy(struct pci_device *dev, void *addr, pciaddr_t size)
@@ -1039,7 +1046,7 @@ pci_system_linux_destroy(void)
 #endif
 }
 
-static const struct pci_system_methods linux_sysfs_methods = {
+/*static const struct pci_system_methods linux_sysfs_methods = {
     .destroy = pci_system_linux_destroy,
     .destroy_device = NULL,
     .read_rom = pci_device_linux_sysfs_read_rom,
@@ -1068,4 +1075,4 @@ static const struct pci_system_methods linux_sysfs_methods = {
 
     .map_legacy = pci_device_linux_sysfs_map_legacy,
     .unmap_legacy = pci_device_linux_sysfs_unmap_legacy,
-};
+};*/
