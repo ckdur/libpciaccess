@@ -50,6 +50,8 @@
 #include <dirent.h>
 #include <errno.h>
 
+int __xstat(int ver, const char * path, struct stat * stat_buf);
+
 #if defined(__i386__) || defined(__x86_64__)
 #include <sys/io.h>
 #else
